@@ -132,7 +132,7 @@ def shell_sort(draw_info, ascending=True):
             while (j >= gap and lst[j - gap] > temp and ascending) or (j >= gap and lst[j - gap] < temp and not ascending):
                 lst[j] = lst[j - gap]
                 j -= gap
-                draw_list(draw_info, {i: draw_info.BLUE, i - 1: draw_info.YELLOW}, True)
+                draw_list(draw_info, {j: draw_info.BLUE, j + gap: draw_info.YELLOW}, True)
                 yield True
             lst[j] = temp
         gap = int(gap / 2)
@@ -157,7 +157,7 @@ def main():
     sorting_algo_generator = None
 
     while run:
-        clock.tick(30)
+        clock.tick(20)
 
         if sorting:
             try:
