@@ -61,7 +61,7 @@ def draw(draw_info, algo_name, ascending):
     controls = draw_info.FONT.render('R - Reset; SPACE - Start sorting; A - Ascending; D - descending', 1, draw_info.BLACK)
     draw_info.window.blit(controls, (draw_info.width / 2 - controls.get_width() / 2, 40))
 
-    sorting = draw_info.FONT.render('B - Bubble sort; I - Insertion sort', 1, draw_info.BLACK)
+    sorting = draw_info.FONT.render('B - Bubble sort; I - Insertion sort; S - Shell sort', 1, draw_info.BLACK)
     draw_info.window.blit(sorting, (draw_info.width / 2 - sorting.get_width() / 2, 70))
 
     draw_list(draw_info)
@@ -98,6 +98,7 @@ def bubble_sort(draw_info, ascending=True):
                 lst[j], lst[j + 1] = lst[j + 1], lst[j]
                 draw_list(draw_info, {j: draw_info.BLUE, j + 1: draw_info.YELLOW}, True)
                 yield True
+
     return lst
 
 def insertion_sort(draw_info, ascending=True):
@@ -120,6 +121,23 @@ def insertion_sort(draw_info, ascending=True):
 
     return lst
 
+def shell_sort(draw_info, ascending=True):
+    lst = draw_info.lst
+    gap = int(len(lst) / 2)
+
+    while gap > 0:
+        for i in range(gap, len(lst)):
+            temp = lst[i]
+            j = i
+            while (j >= gap and lst[j - gap] > temp and ascending) or (j >= gap and lst[j - gap] < temp and not ascending):
+                lst[j] = lst[j - gap]
+                j -= gap
+                draw_list(draw_info, {i: draw_info.BLUE, i - 1: draw_info.YELLOW}, True)
+                yield True
+            lst[j] = temp
+        gap = int(gap / 2)
+
+    return lst
 
 def main():
     run = True
@@ -171,6 +189,9 @@ def main():
             elif event.key == pygame.K_b and not sorting:
                 sorting_algo = bubble_sort
                 sorting_algo_name = "Bubble sort"
+            elif event.key == pygame.K_s and not sorting:
+                sorting_algo = shell_sort
+                sorting_algo_name = "Shell Sort"
 
     pygame.quit()
 
